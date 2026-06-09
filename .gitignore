@@ -1,0 +1,19 @@
+# Compiled output
+*.class
+*.exe
+*.o
+*.out
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# JavaScript
+node_modules/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
