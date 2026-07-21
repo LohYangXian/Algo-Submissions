@@ -44,4 +44,52 @@ we need to solve this in O(n) per case
 1 2 1
 4 2 7
 
+O(n) solution is fine 
+
+1-2 + 1-3 + 1-4 + 2-3 + 2-4 + 3-4 = 
 */
+
+#include <vector>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        int m;
+        cin >> n >> m;
+
+        vector<vector<long long>> matrix(n, vector<long long>(m));
+        long long x;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                cin >> x;
+                matrix[i][j] = x;
+            }
+        }
+
+        long long sum{};
+        for (int i = 0; i < m; i++) {
+            vector<long long> col{};
+            for (int j = 0; j < n; j++) {
+                col.push_back(matrix[j][i]);
+            }
+            sort(col.begin(), col.end());
+
+            vector<long long> prefix(col.size());
+            for (int k = 1; k < n; k++) {
+                prefix[k] += col[k - 1];
+                prefix[k] += prefix[k - 1];
+            }
+
+            for (int k = 0; k < n; k++) {
+                sum += (k * col[k] - prefix[k]);
+            }
+        }
+        cout << sum << "\n";
+    }
+}
+
