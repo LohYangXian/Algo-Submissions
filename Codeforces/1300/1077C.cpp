@@ -32,7 +32,7 @@ int main() {
 
     vector<int> answers{};
 
-    unordered_map<int, vector<int>> indices{};
+    unordered_map<long long, vector<int>> indices{};
 
     for (int i = 1; i <= n; i++) {
         long long x;
