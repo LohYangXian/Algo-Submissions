@@ -51,19 +51,49 @@ int main() {
 
         long long p = 0;
 
-        long long minDist = numeric_limits<long long>::min();
-        long long finalAnsP;
 
-        while (p <= x) {
-            long long dist = pow(x - p, 2) + pow(y - (total - p), 2);
+        long long low = max(0LL, total - y);
+        long long high = min(x, total);
+
+        long long numerator = x - y + total;
+
+        long long finalAnsP = low;
+        long long minDist = numeric_limits<long long>::max();
+
+        for (long long cand : {
+            numerator / 2 - 1,
+            numerator / 2,
+            numerator / 2 + 1,
+            low,
+            high
+        }) {
+            if (cand < low || cand > high) continue;
+
+            long long q = total - cand;
+
+            long long dx = x - cand;
+            long long dy = y - q;
+
+            long long dist = dx * dx + dy * dy;
+
             if (dist < minDist) {
-                finalAnsP = p;
                 minDist = dist;
+                finalAnsP = cand;
             }
-            p++;
         }
 
-        cout << 
+        long long remainingP = finalAnsP;
+        string ans;
 
+        for (long long w = k; w >= 1; w--) {
+            if (w <= remainingP) {
+                ans += 'X';
+                remainingP -= w;
+            } else {
+                ans += 'Y';
+            }
+        }
+
+        cout << ans << "\n";
     }
 }
