@@ -30,72 +30,68 @@ i think result is a float?
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <iomanip>
 using namespace std;
 
-double calc(double x0, vector<pair<double,double>>& v) {
-    double mx = 0;
+long long calc(long long y, vector<pair<long long,long long>>& v) {
+    long long mx = 0;
 
     for (auto &[x, t] : v) {
-        mx = max(mx, t + abs(x - x0));
+        mx = max(mx, 2 * t + abs(2 * x - y));
     }
 
     return mx;
 }
-double findAns(vector<pair<double,double>>& v, vector<double>& vals) {
-    int l = 0;
-    int r = vals.size() - 1;
+
+long long findAns(vector<pair<long long,long long>>& v) {
+    long long mn = v[0].first;
+    long long mx = v[0].first;
+
+    for (auto &[x, t] : v) {
+        mn = min(mn, x);
+        mx = max(mx, x);
+    }
+
+    long long l = 2 * mn;
+    long long r = 2 * mx;
 
     while (l < r) {
-        int mid = l + (r - l) / 2;
+        long long mid = l + (r - l) / 2;
 
-        double curr = calc(vals[mid], v);
-        double next = calc(vals[mid + 1], v);
+        long long curr = calc(mid, v);
+        long long next = calc(mid + 1, v);
 
         if (curr <= next) {
-            // bottom is at mid or somewhere to the left
             r = mid;
         } else {
-            // still going downhill
             l = mid + 1;
         }
     }
 
-    return vals[l];
+    return l;
 }
+
 int main() {
     int t;
     cin >> t;
     while (t--) {
         int n;
         cin >> n;
-        vector<pair<double, double>> v;
+        vector<pair<long long, long long>> v;
         
         for (int i = 0; i < n; i++) {
-            double x; 
+            long long x; 
             cin >> x;
             v.push_back({x, -1});
         }
         
         for (int i = 0; i < n; i++) {
-            double x;
+            long long x;
             cin >> x;
             v[i].second = x;
         }
 
-        double lo = v[0].first;
-        double hi = v[0].first;
-
-        for (auto &[x, t] : v) {
-            lo = min(lo, x);
-            hi = max(hi, x);
-        }
-        
-        vector<double> vals;
-
-        for (double x = lo; x <= hi; x += 0.5) {
-            vals.push_back(x);
-        }
-
-        cout << findAns(v, vals) << "\n";
+        long long ans = findAns(v);
+        cout << fixed << setprecision(10) << ans / 2.0 << '\n'; 
     }
 }
